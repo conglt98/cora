@@ -1,0 +1,38 @@
+img{
+    border-radius: 10px;
+    border: 10px solid #f0f0f0;
+}
+
+.signup{
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 30px;
+    margin: 3% 5%;
+   
+}
+
+.title-signup{
+    font-weight: bold;
+}
+
+.form-signup{
+    margin:0 20%;
+}
+
+.btn-signup{
+    font-weight: bold;
+    padding: 5px 45px;
+    height: 45px;
+}
+
+.form-signup .input-username, .form-signup .input-password{
+    border-radius: 5px;
+    height: 45px;
+}
+
+.form-group{
+    margin: 35px 0px;
+}
+
+ul > li{
+    list-style-type: none; 
+}

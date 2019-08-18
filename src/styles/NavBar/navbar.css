@@ -1,0 +1,21 @@
+.navbar-header{
+    padding: 0% 5% !important;
+}
+
+.cora{
+    color:#18A0FB !important;
+    font-size: 3em;
+    font-weight: bold;
+    margin: 0% !important;
+    padding: 0% !important;
+}
+
+.nav-item-header-money{
+    color: #18A0FB !important;
+}
+
+
+.nav-item-header-user{
+   font-weight: bold !important;
+   color: white !important;
+}

@@ -11,6 +11,7 @@ import Timer from "./Timer";
 import Footer from '../Footer';
 import "../../styles/Game/Game.css"
 import ChatBox from "./ChatBox";
+import GameResultModal from "./GameResultModal";
 
 class Game extends Component {
   constructor(props) {
@@ -71,13 +72,14 @@ class Game extends Component {
     return (
     <div>
     <NavBar/>
+    <GameResultModal piece_current={piece_current} is_win={isWin}/>
     <Timer piece_current={piece_current}/>
-        <div className="container-fluid container-info-board-message">
+        <div className="container container-info-board-message">
           <div className="row">
             <div className="col">
                 <InfoRoom/>
             </div>
-            <div className="col-xl-5 col-lg-6 col-md-8 col-sm-12">
+            <div className="col-xl-5 col-lg-6 col-md-12 col-sm-12 col-board">
                 <div className="container-board">
                     <Board
                         set_number_cell={ numberCell => { 

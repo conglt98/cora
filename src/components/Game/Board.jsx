@@ -32,20 +32,6 @@ export class Board extends Component {
                     </div>
                   ))}
             </div>
-        <div className="information">
-              
-              <div>{" "} {is_win == 1
-                  ? (
-                    <span>{piece_current}
-                      WIN</span>
-                  )
-                  : is_win == 0
-                    ? (
-                      <span>DRAW</span>
-                    )
-                    : null}
-              </div>
-            </div>
 
        </div>   
     )

@@ -33,8 +33,8 @@ const Header = () => (
                   type="text"
                   className="input-username"
                   placeholder="Enter username"
-                  title="Must contain letter, and at least 4 or more characters"
-                  pattern="(?=.*[a-z]).{4,}"
+                  title="Must contain letter, and at least 4, at max 8"
+                  pattern="(?=.*[a-z]).{4,8}"
                   required/>
               </FormGroup>
               <FormGroup className="form-group">
@@ -42,8 +42,8 @@ const Header = () => (
                   type="password"
                   className="input-password"
                   placeholder="Enter password"
-                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,16}"
+                  title="Must contain at least one number and one uppercase and lowercase letter, at least 4, and at max 16 "
                   required/>
               </FormGroup>
               <FormGroup className="form-group">
@@ -51,8 +51,8 @@ const Header = () => (
                   type="password"
                   className="input-password"
                   placeholder="Confirm password"
-                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,16}"
+                  title="Must contain at least one number and one uppercase and lowercase letter, at least 4, and at max 16 "
                   required/>
               </FormGroup>
               <Button type="submit" color="success" className="btn-signup">Sign up</Button>

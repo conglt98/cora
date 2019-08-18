@@ -36,8 +36,8 @@ const Header = () => (
                     type="text"
                     className="input-username"
                     name="username"
-                    title="Must contain letter, and at least 4 or more characters"
-                    pattern="(?=.*[a-z]).{4,}"
+                    title="Must contain letter, and at least 4, at max 8"
+                    pattern="(?=.*[a-z]).{4,8}"
                     required/></td>
 
                 </tr>
@@ -56,8 +56,8 @@ const Header = () => (
                     type="password"
                     className="input-password"
                     name="password"
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,16}"
+                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 4, at max 16"
                     required/></td>
                 </tr>
               </tbody>

@@ -22,7 +22,7 @@
 }
 
 .btn-win {
-  background-color: seagreen;
+  background-color: yellow;
 }
 .not-focusable:focus {
   outline: none !important;

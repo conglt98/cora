@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import Home from './Home'
+import Rooms from './Rooms'
 import Demo from './Demo'
 import LoginSignup from './LoginSignup'
 import Game from './Game'
@@ -29,6 +29,7 @@ class App extends Component {
             <Route exact path="/" component={LoginSignup}/>
             <Route exact path="/demo" component={Demo}/>
             <Route exact path="/play" component={Game}/>
+            <Route exact path="/rooms" component={Rooms}/>
           </div>
         </Router>
 

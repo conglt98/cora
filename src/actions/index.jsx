@@ -1,5 +1,5 @@
 import {SELECT_FOOD} from './actionTypes'
-import { types, pieces } from "../constants/actionTypes";
+import { types, rooms } from "../constants/actionTypes";
 
 
 export const selectFood = (food) => {
@@ -7,6 +7,14 @@ export const selectFood = (food) => {
     return {
         type: SELECT_FOOD,
         payload: food
+    }
+}
+
+export const chooseRoom = (room) => {
+    console.log(`You click = ${room.id}`);
+    return {
+        type: rooms.CHOOSE_ROOM,
+        payload: room
     }
 }
 

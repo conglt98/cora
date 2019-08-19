@@ -5,6 +5,10 @@ export const types = {
     SWITCH_PIECE: "SWITCH_PIECE"
 }
 
+export const rooms ={
+    CHOOSE_ROOM: "CHOOSE_ROOM"
+}
+
 export const pieces = {
     X: "X",
     O: "O"

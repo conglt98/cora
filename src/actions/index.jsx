@@ -1,5 +1,5 @@
 import {SELECT_FOOD} from './actionTypes'
-import { types, rooms, UserO } from "../constants/actionTypes";
+import { types, rooms, UserO, User } from "../constants/actionTypes";
 
 export const selectFood = (food) => {
     console.log(`You click = ${food.name}`);
@@ -40,5 +40,12 @@ export const updateUserO = (userO) => {
     return {
         type: UserO.UPDATE_USER_O,
         userO
+    }
+}
+
+export const updateUser = (user) => {
+    return {
+        type: User.UPDATE_USER,
+        user
     }
 }

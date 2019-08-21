@@ -12,7 +12,12 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
+
 import {connect} from 'react-redux'
+import {bindActionCreators} from "redux";
+import * as gameActions from "../../actions";
+
+
 import '../../styles/NavBar/navbar.css';
 import {message} from 'antd'
 
@@ -33,7 +38,16 @@ class NavBarComp extends React.Component {
     });
   }
 
-  logOut(){
+  logOut = ()=>{
+
+    let user = {
+      id: 0,
+      username:"xxxx",
+      money: 0,
+      token:"abcxyz",
+      isAuth: false
+    }
+    this.props.actions.updateUser(user);
     message.success("Log out!");
   }
 
@@ -78,11 +92,17 @@ class NavBarComp extends React.Component {
   
 }
 
-function mapStateToProps(state){
-  return {
-      user: state.users[0]
-  };
-}
+const mapStateToProps = state => (
+  {
+    user:state.user
+  }
+);
 
-let NavBar = connect(mapStateToProps)(NavBarComp);
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(gameActions, dispatch)
+  };
+};
+
+let NavBar = connect(mapStateToProps,mapDispatchToProps)(NavBarComp);
 export default NavBar;

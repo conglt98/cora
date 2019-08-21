@@ -13,6 +13,10 @@ export const UserO = {
     UPDATE_USER_O: "UPDATE_USER_O"
 }
 
+export const User = {
+    UPDATE_USER: "UPDATE_USER"
+}
+
 export const pieces = {
     X: "X",
     O: "O"

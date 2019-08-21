@@ -9,7 +9,7 @@ import UserOReducer from './user-o-reducer'
 
 const allReducers = combineReducers({
     foods: FoodReducer,
-    users: UserReducer,
+    user: UserReducer,
     activeFood: ActiveFoodReducer,
     gameReducer: GameReducer,
     rooms: RoomReducer,

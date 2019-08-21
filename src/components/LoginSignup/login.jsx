@@ -11,15 +11,34 @@ import {
 import "antd/dist/antd.css";
 import "../../styles/LoginSignup/login.css";
 import {message} from 'antd'
+import * as gameActions from "../../actions";
+import {connect} from 'react-redux'
+import {bindActionCreators} from "redux";
+import {withRouter} from 'react-router-dom';
+
+
 
 class Header extends React.Component{
 
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     console.log("username: " + e.target.username.value);
     console.log("password: " + e.target.password.value);
     
-    message.success("Log in successfully!")   
+    let UserDemo = {
+      id: 10,
+      username:e.target.username.value,
+      money: 500,
+      token:"abcxyz",
+      isAuth: true
+    }
+
+    this.props.actions.updateUser(UserDemo);
+    
+    console.log(this.props.user);
+
+    message.success("Log in successfully!")  
+    this.props.history.push('/rooms'); 
   }
 
   render(){
@@ -29,7 +48,7 @@ class Header extends React.Component{
           <Container fluid="true">
             <Row>
               <Col md={6}>
-                <h1 className="logo">Cora</h1>
+                <h1 className="logo"><a href="/">Cora</a></h1>
               </Col>
               <Col md={2}>
     
@@ -97,4 +116,17 @@ class Header extends React.Component{
   }
 } 
 
-export default Header;
+const mapStateToProps = state => (
+  {
+    user:state.user
+  }
+);
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(gameActions, dispatch)
+  };
+};
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

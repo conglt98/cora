@@ -83,7 +83,7 @@ class ChooseRoom extends Component {
 }
 function mapStateToProps(state) {
   return {chooseRoom: state.chooseRoom,
-          user:state.users[0]
+          user:state.user
   };
 }
 

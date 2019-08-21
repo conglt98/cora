@@ -1,11 +1,39 @@
 import React, {Component} from 'react';
 import './App.css';
 
-import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Rooms from './Rooms'
-import Demo from './Demo'
 import LoginSignup from './LoginSignup'
 import Game from './Game'
+import {BrowserRouter as Router, Route, Redirect, withRouter} from "react-router-dom";
+import {connect} from 'react-redux'
+
+// const fakeAuth = {
+//   isAuthenticated: false,
+//   authenticate(cb) {
+//     this.isAuthenticated = true;
+//     setTimeout(cb, 100); // fake async
+//   },
+//   signout(cb) {
+//     this.isAuthenticated = false;
+//     setTimeout(cb, 100);
+//   }
+// };
+
+// const AuthButton = withRouter(({history}) => fakeAuth.isAuthenticated
+//   ? (
+//     <p>
+//       Welcome!{" "}
+//       <button
+//         onClick={() => {
+//         fakeAuth.signout(() => history.push("/"));
+//       }}>
+//         Sign out
+//       </button>
+//     </p>
+//   )
+//   : (
+//     <p>You are not logged in.</p>
+//   ));
 
 class App extends Component {
 
@@ -14,22 +42,19 @@ class App extends Component {
       <div className="App">
         <Router>
           <div>
-            {/* <ul>
-              <li>
-                <a>
-                  <Link to="/">Home</Link>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <Link to="/Demo">Demo</Link>
-                </a>
-              </li>
-            </ul> */}
-            <Route exact path="/" component={LoginSignup}/>
-            <Route exact path="/demo" component={Demo}/>
-            <Route exact path="/play" component={Game}/>
-            <Route exact path="/rooms" component={Rooms}/>
+            {/* <AuthButton/> */}
+
+            <Redirect
+              to={{
+              pathname: "/rooms",
+              state: {
+                from: "/"
+              }
+            }}/>
+
+            <Route path="/login" component={LoginSignup}/>
+            <PrivateRoute auth={this.props.user.isAuth} path="/rooms" component={Rooms}/>
+            <PrivateRoute auth={this.props.user.isAuth} path="/play" component={Game}/>
           </div>
         </Router>
 
@@ -38,4 +63,63 @@ class App extends Component {
   }
 }
 
-export default App;
+function PrivateRoute({
+  component: Component,
+  ...rest
+}) {
+  return (
+    <Route
+      {...rest}
+      render={props => rest.auth
+      ? (<Component {...props}/>)
+      : (<Redirect
+        to={{
+        pathname: "/login",
+        state: {
+          from: props.location
+        }
+      }}/>)}/>
+  );
+}
+
+
+
+// class Login extends Component {
+//   state = {
+//     redirectToReferrer: false
+//   };
+
+//   login = () => {
+//     fakeAuth.authenticate(() => {
+//       this.setState({redirectToReferrer: true});
+//     });
+//   };
+
+//   render() {
+//     let {from} = this.props.location.state || {
+//       from: {
+//         pathname: "/"
+//       }
+//     };
+//     let {redirectToReferrer} = this.state;
+
+//     if (redirectToReferrer) 
+//       return <Redirect to={from}/>;
+    
+//     return (
+//       <div>
+//         <p>You must log in to view the page at {from.pathname}</p>
+//         <button onClick={this.login}>Log in</button>
+//         <LoginSignup/>
+//       </div>
+//     );
+//   }
+// }
+
+const mapStateToProps = state => (
+  {
+    user:state.user
+  }
+);
+
+export default connect(mapStateToProps)(App);

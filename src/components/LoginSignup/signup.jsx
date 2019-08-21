@@ -1,69 +1,86 @@
 import React from 'react'
 import {
-  Table,
   Row,
   Col,
   Button,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
   Container
 } from 'reactstrap';
 
 import "antd/dist/antd.css";
 import "../../styles/LoginSignup/signup.css";
 import bg from '../../resources/bg-signup.png';
+import { message } from 'antd';
 
-const Header = () => (
+class Header extends React.Component {
 
-  <div className="signup">
-    <Container>
-      <Row>
-        <Col><img className="imageGame" src={bg} width="400px" height="400px" alt=""/></Col>
-        <Col>
-          <form className="form-signup">
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log("username: " + e.target.username.value);
+    console.log("password: " + e.target.password.value);
+    console.log("confirm: " + e.target.confirm.value);
+    if (e.target.password.value!==e.target.confirm.value){
+      message.error("Password does not match!");
+    }else{
+      message.success("Sign up successfully!")
+    }
+  }
 
-            <h2 className="title-signup">Create new account</h2>
+  render() {
+    return (
+      <div className="signup">
+        <Container>
+          <Row>
+            <Col><img className="imageGame" src={bg} width="400px" height="400px" alt=""/></Col>
+            <Col>
+              <form className="form-signup">
 
-            <Form>
-              <FormGroup className="form-group">
-                <Input
-                  type="text"
-                  className="input-username"
-                  placeholder="Enter username"
-                  title="Must contain letter, and at least 4, at max 8"
-                  pattern="(?=.*[a-z]).{4,8}"
-                  required/>
-              </FormGroup>
-              <FormGroup className="form-group">
-                <Input
-                  type="password"
-                  className="input-password"
-                  placeholder="Enter password"
-                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,16}"
-                  title="Must contain at least one number and one uppercase and lowercase letter, at least 4, and at max 16 "
-                  required/>
-              </FormGroup>
-              <FormGroup className="form-group">
-                <Input
-                  type="password"
-                  className="input-password"
-                  placeholder="Confirm password"
-                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,16}"
-                  title="Must contain at least one number and one uppercase and lowercase letter, at least 4, and at max 16 "
-                  required/>
-              </FormGroup>
-              <Button type="submit" color="success" className="btn-signup">Sign up</Button>
-            </Form>
+                <h2 className="title-signup">Create new account</h2>
 
-          </form>
-        </Col>
-      </Row>
-    </Container>
+                <Form onSubmit={this.handleSubmit}>
+                  <FormGroup className="form-group">
+                    <Input
+                      type="text"
+                      name="username"
+                      className="input-username"
+                      placeholder="Enter username"
+                      title="Must contain letter, and at least 4, at max 8"
+                      pattern="(?=.*[a-z]).{4,8}"
+                      required/>
+                  </FormGroup>
+                  <FormGroup className="form-group">
+                    <Input
+                      type="password"
+                      name="password"
+                      className="input-password"
+                      placeholder="Enter password"
+                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,16}"
+                      title="Must contain at least one number and one uppercase and lowercase letter, at least 4, and at max 16 "
+                      required/>
+                  </FormGroup>
+                  <FormGroup className="form-group">
+                    <Input
+                      type="password"
+                      className="input-password"
+                      name="confirm"
+                      placeholder="Confirm password"
+                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,16}"
+                      title="Must contain at least one number and one uppercase and lowercase letter, at least 4, and at max 16 "
+                      required/>
+                  </FormGroup>
+                  <Button type="submit" color="success" className="btn-signup">Sign up</Button>
+                </Form>
 
-  </div>
-);
+              </form>
+            </Col>
+          </Row>
+        </Container>
+
+      </div>
+    )
+  }
+};
 
 export default Header;

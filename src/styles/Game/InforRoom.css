@@ -11,6 +11,7 @@
 
 
 .box-user-x {
+    font-size: 1.3em;
     position: absolute;
     top: 46%;
     right: 50%;
@@ -19,6 +20,7 @@
 }
 
 .box-user-o {
+    font-size: 1.3em;
     position: absolute;
     top: 46%;
     left: 50%;

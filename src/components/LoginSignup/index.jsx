@@ -3,7 +3,7 @@ import Login from './login'
 import Signup from './signup'
 import Footer from '../Footer'
 
-const LoginSignup = ({match}) => (
+const LoginSignup = () => (
   <div>
     <Login/>
     <Signup/>

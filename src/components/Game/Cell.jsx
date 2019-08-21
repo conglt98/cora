@@ -28,7 +28,7 @@ export class Cell extends Component {
         }
         
         return (
-          <button
+          <button disabled={0}
             className={my_class_css}
             onClick={() => {
               if (data == null) mark(row, col);

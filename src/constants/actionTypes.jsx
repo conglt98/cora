@@ -9,6 +9,10 @@ export const rooms ={
     CHOOSE_ROOM: "CHOOSE_ROOM"
 }
 
+export const UserO = {
+    UPDATE_USER_O: "UPDATE_USER_O"
+}
+
 export const pieces = {
     X: "X",
     O: "O"

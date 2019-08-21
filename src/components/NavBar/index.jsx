@@ -12,9 +12,11 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
+import {connect} from 'react-redux'
 import '../../styles/NavBar/navbar.css';
+import {message} from 'antd'
 
-export default class NavBar extends React.Component {
+class NavBarComp extends React.Component {
   constructor(props) {
     super(props);
 
@@ -30,6 +32,15 @@ export default class NavBar extends React.Component {
       isOpen: !this.state.isOpen
     });
   }
+
+  logOut(){
+    message.success("Log out!");
+  }
+
+  getHistory(){
+    message.success("Get history!");
+  }
+
   render() {
     return (
       <div>
@@ -39,23 +50,21 @@ export default class NavBar extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem >
-                <NavLink href="/components/" className="nav-item-header-money">Money: $1000</NavLink>
+                <NavLink href="/rooms#" className="nav-item-header-money">Money: <span className="value">${this.props.user.money}</span></NavLink>
               </NavItem>
               
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret className="nav-item-header-user">
-                  lecongpr98
+                  {this.props.user.username}
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem>
-                    Option 1
+                   <button className="btn-dropdowns" onClick={this.getHistory}>History</button>
                   </DropdownItem>
-                  <DropdownItem>
-                    Option 2
-                  </DropdownItem>
+    
                   <DropdownItem divider/>
                   <DropdownItem>
-                    Reset
+                    <button className="btn-dropdowns" onClick={this.logOut}>Log out</button>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -65,4 +74,15 @@ export default class NavBar extends React.Component {
       </div>
     );
   }
+
+  
 }
+
+function mapStateToProps(state){
+  return {
+      user: state.users[0]
+  };
+}
+
+let NavBar = connect(mapStateToProps)(NavBarComp);
+export default NavBar;

@@ -77,7 +77,7 @@ class Game extends Component {
         <div className="container container-info-board-message">
           <div className="row">
             <div className="col">
-                <InfoRoom/>
+                <InfoRoom />
             </div>
             <div className="col-xl-5 col-lg-6 col-md-12 col-sm-12 col-board">
                 <div className="container-board">

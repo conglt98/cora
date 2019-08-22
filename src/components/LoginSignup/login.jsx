@@ -15,7 +15,7 @@ import * as gameActions from "../../actions";
 import {connect} from 'react-redux'
 import {bindActionCreators} from "redux";
 import {withRouter} from 'react-router-dom';
-
+import axios from 'axios';
 
 
 class Header extends React.Component{
@@ -25,20 +25,39 @@ class Header extends React.Component{
     console.log("username: " + e.target.username.value);
     console.log("password: " + e.target.password.value);
     
-    let UserDemo = {
-      id: 10,
-      username:e.target.username.value,
-      money: 500,
-      token:"abcxyz",
-      isAuth: true
-    }
+    axios.post('http://192.168.43.248:5000/users/authenticate', {
+        username: e.target.username.value,
+        password: e.target.password.value
+      })
+      .then((response)=> {
+        console.log(response);
 
-    this.props.actions.updateUser(UserDemo);
-    
-    console.log(this.props.user);
+        if (response.data.status=="error"){
+            message.error(response.data.message);
+        }else{
+          let userlogin = {
+            id: response.data.data.user_id,
+            username:response.data.data.username,
+            money: response.data.data.total_money,
+            token:response.data.data.token,
+            isAuth: true
+          }
+  
+          console.log(userlogin);
+  
+          this.props.actions.updateUser(userlogin);
+          
+          console.log(this.props.user);
+  
+          message.success("Log in successfully!")  
+          this.props.history.push('/rooms'); 
+        }
 
-    message.success("Log in successfully!")  
-    this.props.history.push('/rooms'); 
+      })
+      .catch((error)=> {
+        message.error("Log in fail!")
+        console.log(error);
+      });
   }
 
   render(){

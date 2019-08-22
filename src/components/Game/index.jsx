@@ -66,6 +66,8 @@ class Game extends Component {
   }
 
   render() {
+    console.log(this.props.user);
+
     const {actions, array_board, piece_current} = this.props;
     console.log(array_board);
     const {isWin, piecesWin} = this.state;
@@ -121,7 +123,8 @@ const mapStateToProps = state => (
   {
     number_cell: state.gameReducer.number_cell, 
     array_board: state.gameReducer.array_board, 
-    piece_current: state.gameReducer.piece_current
+    piece_current: state.gameReducer.piece_current,
+    user: state.user
   }
 );
 

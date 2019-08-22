@@ -4,19 +4,42 @@ import Pagination from '../components/Rooms/pagination'
 import '../styles/Room/room.css'
 import {chooseRoom} from '../actions/index';
 import {bindActionCreators} from 'redux';
+import socketIOClient from "socket.io-client";
+import * as gameActions from "../actions/index";
+import {SOCKET_SERVER} from '../constants/variable';
 
 class RoomList extends Component {
 
   state = {
-    allRooms: this.props.rooms,
+    allRooms: [],
     currentRooms: [],
     currentPage: null,
-    totalPages: null
+    totalPages: null,
+    endpoint: SOCKET_SERVER
   };
 
-  componentDidMount = ()=> {
-    const allRooms = this.state.allRooms;
-    this.setState({ allRooms });
+  // send = () => {
+  //   const socket = socketIOClient(this.state.endpoint);
+  //   socket.emit("load-game-from-client")
+  // }
+
+  componentDidMount = () => {
+    this.setState({allRooms:this.props.rooms})
+  }
+
+  componentWillMount(){
+    const socket = socketIOClient(this.state.endpoint);
+    socket.on('socket-id-from-server', (data) => {
+     console.log(data);
+     let userSocket = Object.assign({}, this.props.user);
+     userSocket.idsocket = data.socket_id;
+     userSocket.socket = socket;
+     this.props.actions.updateUser(userSocket);
+    })
+
+    socket.on('load-game-from-server', (data) => {
+      console.log(data);
+     })
   }
 
   componentWillReceiveProps = props => {
@@ -44,9 +67,9 @@ class RoomList extends Component {
       currentItems
       .map((eachRoom) => {
         return (
-          <div className="col-lg-6 col-md-12 col-room">
-            <div key={eachRoom.id} className="card-room" 
-            onClick={() => {this.props.chooseRoom(eachRoom)}}>
+          <div key={eachRoom.id} className="col-lg-6 col-md-12 col-room">
+            <div className="card-room" 
+            onClick={() => {this.props.actions.chooseRoom(eachRoom)}}>
               <div>
                 <div className="room-name">
                   {eachRoom.name}
@@ -95,13 +118,16 @@ class RoomList extends Component {
 }
 
 function mapStateToProps(state) {
-  return {rooms: state.rooms};
+  return {
+    rooms: state.rooms,
+    user:state.user
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    chooseRoom: chooseRoom
-  }, dispatch);
+  return {
+    actions: bindActionCreators(gameActions, dispatch)
+  }
 }
 
 let RoomContainer = connect(mapStateToProps,mapDispatchToProps)(RoomList);

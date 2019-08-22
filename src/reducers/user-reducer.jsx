@@ -6,7 +6,9 @@ const inital_state =
         username:"conglt",
         money: 500,
         token:"abcxyz",
-        isAuth: true
+        isAuth: false,
+        idsocket:"",
+        socket: null
     }
 ;
 export default (state = inital_state, action) => {

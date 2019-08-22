@@ -13,6 +13,7 @@ import "antd/dist/antd.css";
 import "../../styles/LoginSignup/signup.css";
 import bg from '../../resources/bg-signup.png';
 import { message } from 'antd';
+import axios from 'axios'
 
 class Header extends React.Component {
 
@@ -21,10 +22,29 @@ class Header extends React.Component {
     console.log("username: " + e.target.username.value);
     console.log("password: " + e.target.password.value);
     console.log("confirm: " + e.target.confirm.value);
+    
     if (e.target.password.value!==e.target.confirm.value){
       message.error("Password does not match!");
-    }else{
-      message.success("Sign up successfully!")
+    }
+    else{
+
+      axios.post('http://192.168.43.248:5000/users/register', {
+        username: e.target.username.value,
+        password: e.target.password.value
+      })
+      .then((response)=> {
+        console.log(response);
+        if (response.data.status === "error"){
+          message.error(response.data.message);
+        }else{
+          message.success("Sign up successfully!");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Sign up fail!")
+        
+      });
     }
   }
 

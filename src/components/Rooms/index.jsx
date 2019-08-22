@@ -12,6 +12,8 @@ import {connect} from 'react-redux'
 import uuid from "uuid";
 import {bindActionCreators} from 'redux'
 import * as gameActions from '../../actions';
+import {SOCKET_SERVER} from '../../constants/variable'
+import socketIOClient from "socket.io-client";
 
 const marks = {
   0: '$0',
@@ -63,25 +65,41 @@ class Room extends React.Component{
 
   handleWaitingOk = e =>{
     
-    let roomObject = {
-      id:uuid.v4(),
-      name:"Room's "+this.props.user.username,
-      createdAt:(new Date()).toLocaleString(),
-      betMoney: this.state.money,
-      host: this.props.user.username
+    // let roomObject = {
+    //   id:uuid.v4(),
+    //   name: this.props.user.username+"'s room",
+    //   createdAt:(new Date()).toLocaleString(),
+    //   betMoney: this.state.money,
+    //   host: this.props.user.username
+    // }
+    // console.log(roomObject);
+
+    //socket = socketIOClient(SOCKET_SERVER);
+    let roomCreate = {
+      user_id: this.props.user.id,
+      bet_money: this.state.money,
+      username: this.props.user.username,
+      socket_id: this.props.user.idsocket
     }
-    //this.props.actions.chooseRoom(roomObject);
 
-    console.log(roomObject);
+    console.log(roomCreate);
+    this.props.user.socket.emit('create-game-from-client', roomCreate);    
 
-    let roomlist = JSON.parse(JSON.stringify(this.props.rooms));
-    roomlist.unshift(roomObject)
-
-    this.props.actions.updateRooms(roomlist);
-
-    this.setState({
+    this.props.user.socket.on('fail-create-room-server',(err)=>{
+      this.setState({
         confirmLoading: false,
         waiting:false
+      });
+      message.error(err.status);
+    });
+
+    // let roomlist = JSON.parse(JSON.stringify(this.props.rooms));
+    // roomlist.unshift(roomObject)
+    // this.props.actions.updateRooms(roomlist);
+
+    this.setState({
+        confirmLoading: true,
+        waiting:true
     });
 
     // this.setState({
@@ -119,6 +137,8 @@ class Room extends React.Component{
   }
 
   render(){
+    console.log(this.props.user);
+
     const { money } = this.state;
     return(
       <div>

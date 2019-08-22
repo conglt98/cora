@@ -37,19 +37,31 @@ class RoomList extends Component {
      this.props.actions.updateUser(userSocket);
     })
 
+    //console.log(this.props.rooms);
+
     socket.on('load-game-from-server', (data) => {
-      console.log(data);
-     })
+      //console.log(JSON.parse(data).list);
+      let dataCraw = JSON.parse(data).list
+      let oldData = this.props.rooms;
+      
+      this.setState({
+        allRooms:dataCraw,
+        currentRooms: dataCraw?dataCraw.slice(0, 8):null,
+        currentPage: 1,
+        totalPages:dataCraw?dataCraw.length:0
+       });
+      //socket.removeListener('load-game-from-server');
+    })
   }
 
-  componentWillReceiveProps = props => {
-    this.setState({
-      allRooms:props.rooms,
-      currentRooms: props.rooms.slice(0, 8),
-      currentPage: 1,
-      totalPages:props.rooms.length
-     });
-  }
+  // componentWillReceiveProps = props => {
+  //   this.setState({
+  //     allRooms:props.rooms,
+  //     currentRooms: props.rooms.slice(0, 8),
+  //     currentPage: 1,
+  //     totalPages:props.rooms.length
+  //    });
+  // }
 
   onPageChanged = data => {
     const { allRooms } = this.state;
@@ -63,6 +75,7 @@ class RoomList extends Component {
 
 
   createRoomListItems(currentItems) {
+    
     let listItems = 
       currentItems
       .map((eachRoom) => {
@@ -72,14 +85,14 @@ class RoomList extends Component {
             onClick={() => {this.props.actions.chooseRoom(eachRoom)}}>
               <div>
                 <div className="room-name">
-                  {eachRoom.name}
+                  {eachRoom.title}
                 </div>
                 <div className="room-created-at">
-                  {eachRoom.createdAt}
+                  {eachRoom.created_at}
                 </div>
               </div>
               <div className="room-bet-money">
-                ${eachRoom.betMoney}
+                ${eachRoom.bet_money}
               </div>
             </div>
           </div>

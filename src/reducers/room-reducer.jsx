@@ -3,18 +3,12 @@ import { roomlist } from "../constants/actionTypes";
 const inital_state = 
 [
         {
-            id: 1,
-            name:"cong's room",
-            createdAt: (new Date()).toLocaleString(),
-            betMoney:999,
-            host: "cong"
-        },
-        {
             id:2,
-            name:"vuong's room",
-            createdAt:(new Date()).toLocaleString(),
-            betMoney:250,
-            host: "vuong"
+            title:"vuong's room",
+            created_at:(new Date()).toLocaleString(),
+            bet_money:250,
+            host_name: "vuong",
+            host: "3"
         }
 ]
     

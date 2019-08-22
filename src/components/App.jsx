@@ -37,6 +37,29 @@ import {connect} from 'react-redux'
 
 class App extends Component {
 
+  state={
+    isAuth:false
+  }
+
+  componentWillMount(){
+    const userTmp = JSON.parse(localStorage.getItem("userInfo"));
+      if (userTmp){
+        if (userTmp.isAuth){
+          this.setState({isAuth:true})
+          return;
+        }
+      }
+  }
+
+  componentWillReceiveProps=props=>{
+    if (props.user.isAuth){
+      this.setState({isAuth:true})
+      return;
+    }else{
+      this.setState({isAuth:false})
+    }
+  }
+
   render() {
     
     return (
@@ -54,8 +77,8 @@ class App extends Component {
             }}/>
 
             <Route path="/login" component={LoginSignup}/>
-            <PrivateRoute auth={this.props.user.isAuth} path="/rooms" component={Rooms}/>
-            <PrivateRoute auth={this.props.user.isAuth} path="/play" component={Game}/>
+            <PrivateRoute auth={this.state.isAuth} path="/rooms" component={Rooms}/>
+            <PrivateRoute auth={this.state.isAuth} path="/play" component={Game}/>
           </div>
         </Router>
 

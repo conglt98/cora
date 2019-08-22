@@ -16,7 +16,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from "redux";
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
-
+import {API_LOGIN} from '../../constants/variable'
 
 class Header extends React.Component{
 
@@ -25,7 +25,7 @@ class Header extends React.Component{
     console.log("username: " + e.target.username.value);
     console.log("password: " + e.target.password.value);
     
-    axios.post('http://192.168.43.248:5000/users/authenticate', {
+    axios.post(API_LOGIN, {
         username: e.target.username.value,
         password: e.target.password.value
       })
@@ -46,9 +46,10 @@ class Header extends React.Component{
           console.log(userlogin);
   
           this.props.actions.updateUser(userlogin);
-          
           console.log(this.props.user);
   
+          localStorage.setItem('userInfo', JSON.stringify(userlogin));
+
           message.success("Log in successfully!")  
           this.props.history.push('/rooms'); 
         }

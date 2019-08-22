@@ -48,6 +48,7 @@ class NavBarComp extends React.Component {
       isAuth: false
     }
     this.props.actions.updateUser(user);
+    localStorage.removeItem("userInfo");
     message.success("Log out!");
   }
 

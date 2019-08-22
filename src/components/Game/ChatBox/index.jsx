@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import "../../../styles/Game/ChatBox.css"
 import Message from './Message.js';
 
-import { Smile } from 'react-feather';
 import { Picker } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
+
+import {connect} from "react-redux";
+
 
 class ChatBox extends React.Component {
     constructor(props) {
@@ -13,44 +15,22 @@ class ChatBox extends React.Component {
 
         this.state = {
             showEmojiPicker: false,
-            chats: [{
-                username: "Kevin Hsu",
-                content: <p>Hello World!</p>,
-                img: "http://i.imgur.com/Tj5DGiO.jpg",
-            }, {
-                username: "Alice Chen",
-                content: <p>Love it! :heart:</p>,
-                img: "http://i.imgur.com/Tj5DGiO.jpg",
-            }, {
-                username: "Kevin Hsu",
-                content: <p>Check out my Github at https://github.com</p>,
-                img: "http://i.imgur.com/Tj5DGiO.jpg",
-            }, {
-                username: "KevHs",
-                content: <p>Lorem ipsum dolor sit amet, nibh ipsum. Cum class sem inceptos incidunt sed sed. Tempus wisi enim id, arcu sed lectus aliquam, nulla vitae est bibendum molestie elit risus.</p>,
-                img: "http://i.imgur.com/ARbQZix.jpg",
-            }, {
-                username: "Kevin Hsu",
-                content: <p>So</p>,
-                img: "http://i.imgur.com/Tj5DGiO.jpg",
-            }, {
-                username: "Kevin Hsu",
-                content: <p>Chilltime is going to be an app for you to view videos with friends</p>,
-                img: "http://i.imgur.com/Tj5DGiO.jpg",
-            }, {
-                username: "Kevin Hsu",
-                content: <p>You can sign-up now to try out our private beta!</p>,
-                img: "http://i.imgur.com/Tj5DGiO.jpg",
-            }, {
-                username: "Alice Chen",
-                content: <p>Definitely! Sounds great!</p>,
-                img: "http://i.imgur.com/Tj5DGiO.jpg",
-            }]
+            chats: []
         };
 
         this.submitMessage = this.submitMessage.bind(this);
         this.addEmoji = this.addEmoji.bind(this);
         this.toggleEmojiPicker = this.toggleEmojiPicker.bind(this);
+    }
+
+    componentWillMount = ()=>{
+        this.props.user.socket.on('chat-game-from-server',(data)=>{
+            console.log(data.message);
+
+            this.setState({
+               chats: data.message
+           })
+        })
     }
 
     componentDidMount() {
@@ -79,22 +59,30 @@ class ChatBox extends React.Component {
         })
     }
 
-    submitMessage(e) {
+    submitMessage = (e)=> {
         e.preventDefault();
 
+        console.log(this.props.user);
         this.setState({
             chats: this.state.chats.concat([{
-                username: "Kevin Hsu",
-                content: <p>{ReactDOM.findDOMNode(this.refs.msg).value}</p>,
+                username: this.props.user.username,
+                content: ReactDOM.findDOMNode(this.refs.msg).value,
                 img: "http://i.imgur.com/Tj5DGiO.jpg",
             }])
         }, () => {
             ReactDOM.findDOMNode(this.refs.msg).value = "";
+            let request = {
+                game_id: this.props.chooseRoom.id,
+                username: this.props.user.username,
+                message:this.state.chats
+            }
+            console.log(request)
+            this.props.user.socket.emit("chat-game-from-client", request);
         });
     }
 
     render() {
-        const username = "Kevin Hsu";
+        const username = this.props.user.username;
         
         const { showEmojiPicker, chats } = this.state;
 
@@ -128,4 +116,12 @@ class ChatBox extends React.Component {
     }
 }
 
-export default ChatBox;
+const mapStateToProps = state => (
+{
+      user: state.user,
+      chooseRoom: state.chooseRoom,
+      userO: state.userOCurrent
+}
+);
+
+export default connect(mapStateToProps)(ChatBox);

@@ -12,8 +12,8 @@ class ChooseRoom extends Component {
     this.state = {
       visible: false,
       id: "",
-      betMoney:0,
-      host:""
+      betMoney: 0,
+      host: ""
     }
   }
 
@@ -22,47 +22,76 @@ class ChooseRoom extends Component {
   };
 
   handleOk = e => {
-    console.log(e);
-    this.setState({visible: false});
+      this.setState({visible: false});
 
-    if (this.props.user.money < this.state.betMoney){
-      message.error("Your money is not enough!");  
-    }else{
+      if (this.props.user.money < this.state.betMoney) {
+        message.error("Your money is not enough!");
+      } else {
 
-      
-      this.props.updateUserOFunc(this.props.user)
-      
-      let roomObject = {
-        id: this.state.id,
-        name: this.props.chooseRoom.name,
-        createdAt:this.props.chooseRoom.createdAt,
-        betMoney: this.state.betMoney,
-        host: this.props.chooseRoom.host
+        this
+          .props
+          .updateUserOFunc(this.props.user)
+
+        let roomObject = {
+          id: this.state.id,
+          title: this.props.chooseRoom.title,
+          created_at: this.props.chooseRoom.created_at,
+          bet_money: this.state.betMoney,
+          host_name: this.props.chooseRoom.host_name,
+          host: this.props.chooseRoom.host
+        }
+
+        console.log(roomObject);
+
+        let request = {
+          game_id: this.state.id,
+          user_id: this.props.user.id,
+          username: this.props.user.username,
+          socket_id: this.props.user.idsocket
+        }
+
+        this.props.user.socket.emit('join-game-from-client',request);
+        this.props.user.socket.on('join-game-from-server',(msg)=>{
+          console.log("join gamee");
+          console.log(msg);
+          console.log(this.state.game_id);
+          if (msg.status==="full")
+          {
+            message.error(msg.status);
+          }else if (msg.status==="ok"){
+            let room = {
+              id: msg.game_id,
+              bet_money: msg.bet_money,
+              host: msg.host,
+              host_name: msg.host_name
+              
+            }
+            this.props.chooseRoomFunc(room);
+            message.success("Join room");
+            this
+              .props
+              .history
+              .push('/play');
+          }else{
+            message.error(msg.status)
+          }
+        })
       }
-
-      console.log(roomObject);
-
-      this.props.chooseRoomFunc(roomObject);
-
-      message.success("Join room");
-      this.props.history.push('/play');
-    }
   };
 
   handleCancel = e => {
     console.log(e);
     this.setState({visible: false});
-    this.props.chooseRoomFunc(null);
+    this
+      .props
+      .chooseRoomFunc(null);
+
   };
 
-
-
   componentWillReceiveProps(nextProps) {
-    if(nextProps.chooseRoom) {
-      this.setState({visible: true, id:nextProps.chooseRoom.id,
-        betMoney:nextProps.chooseRoom.betMoney,
-        host:nextProps.chooseRoom.host
-      });
+    console.log(nextProps);
+    if (nextProps.chooseRoom) {
+      this.setState({visible: true, id: nextProps.chooseRoom.id, betMoney: nextProps.chooseRoom.bet_money, host: nextProps.chooseRoom.host_name});
     }
   }
 
@@ -75,16 +104,17 @@ class ChooseRoom extends Component {
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}>
-          <div className="text-ask">Do you accept bet money ${this.state.betMoney} - ID: {this.state.id} -  Host: {this.state.host}? </div>
+          <div className="text-ask">Do you accept bet money ${this.state.betMoney}
+            - ID: {this.state.id}
+            - Host: {this.state.host}?
+          </div>
         </Modal>
       </div>
     );
   }
 }
 function mapStateToProps(state) {
-  return {chooseRoom: state.chooseRoom,
-          user:state.user
-  };
+  return {chooseRoom: state.chooseRoom, user: state.user};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -94,5 +124,5 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-let ChooseRoomContainer = connect(mapStateToProps,mapDispatchToProps)(ChooseRoom);
+let ChooseRoomContainer = connect(mapStateToProps, mapDispatchToProps)(ChooseRoom);
 export default withRouter(ChooseRoomContainer);

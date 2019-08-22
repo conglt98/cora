@@ -14,6 +14,7 @@ import "../../styles/LoginSignup/signup.css";
 import bg from '../../resources/bg-signup.png';
 import { message } from 'antd';
 import axios from 'axios'
+import {API_SIGNUP} from '../../constants/variable'
 
 class Header extends React.Component {
 
@@ -28,7 +29,7 @@ class Header extends React.Component {
     }
     else{
 
-      axios.post('http://192.168.43.248:5000/users/register', {
+      axios.post(API_SIGNUP, {
         username: e.target.username.value,
         password: e.target.password.value
       })

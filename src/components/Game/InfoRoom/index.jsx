@@ -5,8 +5,8 @@ import {connect} from 'react-redux'
 
 export class InfoRoom extends Component {
   state={
-    money: this.props.chooseRoom ? this.props.chooseRoom.betMoney : 0,
-    host: this.props.chooseRoom? this.props.chooseRoom.host:""
+    money: this.props.chooseRoom ? this.props.chooseRoom.bet_money : 0,
+    host: this.props.chooseRoom? this.props.chooseRoom.host_name:""
   }
 
   render() {

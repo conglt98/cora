@@ -6,7 +6,7 @@ const Message = ({chat, user}) => (
         {user !== chat.username
             && <img src={chat.img} alt={`${chat.username}'s profile pic`} />
         }
-        {chat.content}
+        <p>{chat.content}</p>
     </li>
 );
 

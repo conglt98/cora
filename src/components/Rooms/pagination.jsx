@@ -39,6 +39,11 @@ class Pagination extends Component {
    this.gotoPage(1);
  }
 
+ componentWillReceiveProps(nextProps){
+   this.totalPages =  Math.ceil(nextProps.totalRecords / nextProps.pageLimit);
+
+ }
+
  gotoPage = page => {
    const { onPageChanged = f => f } = this.props;
 

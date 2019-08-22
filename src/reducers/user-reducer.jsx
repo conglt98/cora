@@ -1,13 +1,12 @@
 import { User } from "../constants/actionTypes";
 
-
 const inital_state =
     {
         id: 1,
         username:"conglt",
         money: 500,
         token:"abcxyz",
-        isAuth: false
+        isAuth: true
     }
 ;
 export default (state = inital_state, action) => {

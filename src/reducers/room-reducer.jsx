@@ -1,6 +1,7 @@
-export default () =>{
-    // eslint-disable-next-line no-sparse-arrays
-    return [
+import { roomlist } from "../constants/actionTypes";
+
+const inital_state = 
+    [
         {
             id: 1,
             name:"Room's cong",
@@ -79,6 +80,41 @@ export default () =>{
             createdAt: (new Date()).toLocaleString(),
             betMoney:999,
             host:"abcde"
-        } 
+        } ,
+        {
+            id:13,
+            name:"Room's vuong",
+            createdAt:(new Date()).toLocaleString(),
+            betMoney:999,
+            host:"abcde"
+        },{
+            id: 14,
+            name:"Room's cong",
+            createdAt: (new Date()).toLocaleString(),
+            betMoney:999,
+            host:"abcde"
+        } ,
+        {
+            id:15,
+            name:"Room's vuong",
+            createdAt:(new Date()).toLocaleString(),
+            betMoney:999,
+            host:"abcde"
+        },{
+            id: 16,
+            name:"Room's cong",
+            createdAt: (new Date()).toLocaleString(),
+            betMoney:999,
+            host:"abcde"
+        }
     ]
-}
+
+export default (state = inital_state, action) => {
+    switch (action.type) {
+      case roomlist.UPDATE_ROOMS: {
+        return action.rooms;
+      }
+      default:
+        return state;
+    }
+  };

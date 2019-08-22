@@ -8,15 +8,24 @@ import {bindActionCreators} from 'redux';
 class RoomList extends Component {
 
   state = {
-    allRooms: [],
+    allRooms: this.props.rooms,
     currentRooms: [],
     currentPage: null,
     totalPages: null
   };
 
-  componentDidMount() {
-    const allRooms = this.props.rooms;
+  componentDidMount = ()=> {
+    const allRooms = this.state.allRooms;
     this.setState({ allRooms });
+  }
+
+  componentWillReceiveProps = props => {
+    this.setState({
+      allRooms:props.rooms,
+      currentRooms: props.rooms.slice(0, 8),
+      currentPage: 1,
+      totalPages:props.rooms.length
+     });
   }
 
   onPageChanged = data => {
@@ -26,7 +35,7 @@ class RoomList extends Component {
     const offset = (currentPage - 1) * pageLimit;
     const currentRooms = allRooms.slice(offset, offset + pageLimit);
 
-    this.setState({ currentPage, currentRooms, totalPages });
+    this.setState({ currentRooms, currentPage, totalPages});
   };
 
 
@@ -59,12 +68,10 @@ class RoomList extends Component {
   render() {
     const {
       allRooms,
-      currentRooms,
-      currentPage,
-      totalPages
+      currentRooms
     } = this.state;
     const totalRooms = allRooms.length;
-
+   
     if (totalRooms === 0) return null;
     return (
       <div>

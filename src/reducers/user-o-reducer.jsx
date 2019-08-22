@@ -4,7 +4,7 @@ import { UserO } from "../constants/actionTypes";
 const inital_state = {
   userO:{
     id: 0,
-    username:"xxxx",
+    username:"",
     money: 0
   }
 };

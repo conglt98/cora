@@ -38,7 +38,7 @@ class Room extends React.Component{
   };
 
   handleOk = e => {
-    console.log(e.value);
+    
     this.setState({
       visible: false,
     });
@@ -62,36 +62,50 @@ class Room extends React.Component{
   };
 
   handleWaitingOk = e =>{
-    console.log(e.value);
+    
+    let roomObject = {
+      id:uuid.v4(),
+      name:"Room's "+this.props.user.username,
+      createdAt:(new Date()).toLocaleString(),
+      betMoney: this.state.money,
+      host: this.props.user.username
+    }
+    //this.props.actions.chooseRoom(roomObject);
+
+    console.log(roomObject);
+
+    let roomlist = JSON.parse(JSON.stringify(this.props.rooms));
+    roomlist.unshift(roomObject)
+
+    this.props.actions.updateRooms(roomlist);
+
     this.setState({
-      confirmLoading: true
+        confirmLoading: false,
+        waiting:false
     });
 
-    setTimeout(() => {
-      this.setState({
-        waiting: false,
-        confirmLoading: false,
-      });
+    // this.setState({
+    //   confirmLoading: true
+    // });
 
-      let roomObject = {
-        id:uuid.v4(),
-        name:"Room's "+this.props.user.username,
-        createdAt:(new Date()).toLocaleString(),
-        betMoney: this.state.money,
-        host: this.props.user.username
-      }
-      this.props.actions.chooseRoom(roomObject);
+    // setTimeout(() => {
+    //   this.setState({
+    //     waiting: false,
+    //     confirmLoading: false,
+    //   });
+
     
-      message.success("Join room");
-      this.props.history.push('/play');
-    }, 5000);
+    //   message.success("Join room");
+    //   this.props.history.push('/play');
+    // }, 5000);
 
   }
 
   handleWaitingCancel = e =>{
     console.log(e.value);
     this.setState({
-      waiting: false
+      waiting: false,
+      confirmLoading: false
     });
   }
   
@@ -156,7 +170,9 @@ class Room extends React.Component{
 function mapsStateToProps(state){
   return {
     user:state.user,
-    userO: state.userOCurrent.User0
+    userO: state.userOCurrent.User0,
+    chooseRoom: state.chooseRoom,
+    rooms: state.rooms
   }
 }
 

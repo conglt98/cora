@@ -59,12 +59,12 @@ class NavBarComp extends React.Component {
     return (
       <div>
         <Navbar className="navbar-header" color="dark" dark expand="md">
-          <NavbarBrand href="/" className="cora">Cora</NavbarBrand>
+          <NavbarBrand href="#" className="cora">Cora</NavbarBrand>
           <NavbarToggler onClick={this.toggle}/>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem >
-                <NavLink href="/rooms#" className="nav-item-header-money">Money: <span className="value">${this.props.user.money}</span></NavLink>
+                <NavLink href="#" className="nav-item-header-money">Money: <span className="value">${this.props.user.money}</span></NavLink>
               </NavItem>
               
               <UncontrolledDropdown nav inNavbar>

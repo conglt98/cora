@@ -1,5 +1,5 @@
 import {SELECT_FOOD} from './actionTypes'
-import { types, rooms, UserO, User } from "../constants/actionTypes";
+import { types, rooms, UserO, User,  roomlist } from "../constants/actionTypes";
 
 export const selectFood = (food) => {
     console.log(`You click = ${food.name}`);
@@ -15,6 +15,14 @@ export const chooseRoom = (room) => {
         payload: room
     }
 }
+
+export const updateRooms = (rooms) => {
+    return {
+        type: roomlist.UPDATE_ROOMS,
+        rooms
+    }
+}
+
 
 export const set_number_cell = number_cell => ({
     type: types.SET_NUMBER_CELL,

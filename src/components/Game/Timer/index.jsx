@@ -6,13 +6,13 @@ import {connect} from "react-redux";
 import * as gameActions from "../../../actions";
 import {bindActionCreators} from "redux";
 
-
+const TIME = 7;
 class Timer extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      count: 100
+      count: TIME
     }
   }
 
@@ -30,7 +30,7 @@ class Timer extends Component {
       clearInterval(this.myInterval)
     }else{
       this.setState({
-        count: 100
+        count: TIME
       })
     }
   }
@@ -42,7 +42,7 @@ class Timer extends Component {
   render() {
     const {count} = this.state;
     if (count === -1) {
-      this.setState({count: 100})
+      this.setState({count: TIME})
     }
     return (
       <div className="container container-timer">
@@ -51,7 +51,7 @@ class Timer extends Component {
           <div className="title-turn">Turn: {this.props.piece_current}</div>
           </div>
           <div className="col-8">
-            <CustomProgressBar percentage = {this.state.count/100*100}/>
+            <CustomProgressBar percentage = {this.state.count/TIME*100}/>
           </div>
 
           <div className="col-2">

@@ -2,11 +2,14 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Pagination from '../components/Rooms/pagination'
 import '../styles/Room/room.css'
-import {chooseRoom} from '../actions/index';
 import {bindActionCreators} from 'redux';
 import socketIOClient from "socket.io-client";
 import * as gameActions from "../actions/index";
 import {SOCKET_SERVER} from '../constants/variable';
+
+import axios from 'axios';
+import {API_SERVER} from '../constants/variable'
+
 
 class RoomList extends Component {
 
@@ -28,7 +31,7 @@ class RoomList extends Component {
   // }
 
   componentWillMount(){
-    const socket = socketIOClient(this.state.endpoint);
+    const socket = socketIOClient(this.state.endpoint,{query: "token="+this.props.user.token});
     socket.on('socket-id-from-server', (data) => {
      console.log(data);
      let userSocket = Object.assign({}, this.props.user);
@@ -54,6 +57,31 @@ class RoomList extends Component {
       //socket.removeListener('load-game-from-server');
     })
   }
+
+  componentDidMount(){
+    axios.get(API_SERVER+"/users/"+this.props.user.id, {
+      headers: {
+        token: this.props.user.token
+      }
+    })
+    .then((msg) =>{
+        console.log(msg);
+        let user = Object.assign({}, this.props.user);
+        user.token = msg.data.token;
+        user.money = msg.data.total_money;
+        this.props.actions.updateUser(user);
+
+        let userLocal = JSON.parse(localStorage.getItem("userInfo"));
+        userLocal.token = msg.data.token;
+        userLocal.money = msg.data.total_money;
+        localStorage.setItem('userInfo', JSON.stringify(userLocal));
+
+    })
+      .catch((err)=>{
+        console.log(err);
+    })
+  }
+  
 
   // componentWillReceiveProps = props => {
   //   this.setState({

@@ -32,13 +32,29 @@ class Game extends Component {
 
   componentWillReceiveProps = props =>{
     if (props.countdown===0){
-        this.setState({
-          isWin:1
-        })
+               
+        let request = {
+          socket_id: this.props.user.idsocket,
+          game_id: this.props.roomPlaying.id,
+          user_id: this.props.user.id
+        }
+        console.log(request)
+        this.props.user.socket.emit('ignore-game-from-client',request);
     }
+    if (this.props.user.socket)
+    this.props.user.socket.on('ignore-game-from-server',(data)=>{
+      console.log("ignore");
+      console.log(data);
+      let dataJSON = JSON.parse(data);
+      if (dataJSON.status === "ignore game"){
+        this.setState({isWin:1}) 
+        this.props.actions.switch_piece(dataJSON.info.turn);  
+        this.props.actions.updateIgnoreTurn(true);
+      }
+    })
   }
 
-  componentDidMount = ()=>{
+  componentDidMount = () =>{
     if (this.props.user.socket)
     this.props.user.socket.on('play-game-from-server',(data)=>{
       console.log("gamefromserver");
@@ -115,7 +131,7 @@ class Game extends Component {
     this
       .props
       .actions
-      .init_array(Array(15).fill(null).map(() => Array(15).fill(null)));
+      .init_array(Array(16).fill(null).map(() => Array(16).fill(null)));
     this
       .props
       .actions

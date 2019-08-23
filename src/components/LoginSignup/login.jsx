@@ -32,7 +32,7 @@ class Header extends React.Component{
       .then((response)=> {
         console.log(response);
 
-        if (response.data.status=="error"){
+        if (response.data.status==="error"){
             message.error(response.data.message);
         }else{
           let userlogin = {

@@ -1,5 +1,9 @@
 @import '../../../node_modules/antd/dist/antd.css';
 
+.ant-modal-close-x{
+    display: none !important;
+}
+
 .ant-modal-title{
     font-family: "Nunito", sans-serif;
     font-weight: bold;

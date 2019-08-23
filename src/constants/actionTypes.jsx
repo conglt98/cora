@@ -33,3 +33,7 @@ export const pieces = {
 export const countdown = {
     UPDATE_COUNTDOWN: "UPDATE_COUNTDOWN"
 }
+
+export const ignoreTurn = {
+    UPDATE_IGNORE_TURN: "UPDATE_IGNORE_TURN"
+}

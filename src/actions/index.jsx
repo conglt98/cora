@@ -1,5 +1,5 @@
 import {SELECT_FOOD} from './actionTypes'
-import { countdown,types, rooms, UserO, User,  roomlist, roomplaying } from "../constants/actionTypes";
+import { ignoreTurn,countdown,types, rooms, UserO, User,  roomlist, roomplaying } from "../constants/actionTypes";
 
 export const selectFood = (food) => {
     console.log(`You click = ${food.name}`);
@@ -69,5 +69,12 @@ export const updateCountdown = (time) =>{
     return {
         type: countdown.UPDATE_COUNTDOWN,
         time
+    }
+}
+
+export const updateIgnoreTurn = (isIgnore) =>{
+    return {
+        type: ignoreTurn.UPDATE_IGNORE_TURN,
+        isIgnore
     }
 }

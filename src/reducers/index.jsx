@@ -8,6 +8,7 @@ import ChooseRoomReducer from './choose-room-reducer'
 import UserOReducer from './user-o-reducer'
 import roomPlayingReducer from './room-playing-reducer'
 import countdownReducer from './countdown-reducer'
+import ignoreTurnReducer from './ignore-turn-reducer'
 
 const allReducers = combineReducers({
     foods: FoodReducer,
@@ -18,7 +19,8 @@ const allReducers = combineReducers({
     chooseRoom: ChooseRoomReducer,
     userOCurrent: UserOReducer,
     roomPlaying: roomPlayingReducer,
-    countdown: countdownReducer
+    countdown: countdownReducer,
+    ignoreTurn:ignoreTurnReducer
 });
 
 export default allReducers;

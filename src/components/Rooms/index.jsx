@@ -9,11 +9,8 @@ import {Slider, Modal} from 'antd'
 import {withRouter} from 'react-router-dom';
 import {message} from 'antd'
 import {connect} from 'react-redux' 
-import uuid from "uuid";
 import {bindActionCreators} from 'redux'
 import * as gameActions from '../../actions';
-import {SOCKET_SERVER} from '../../constants/variable'
-import socketIOClient from "socket.io-client";
 
 const marks = {
   0: '$0',
@@ -23,8 +20,7 @@ const marks = {
   },
 };
 
-class Room extends React.Component{ 
-  
+class Room extends React.Component{   
 
   state = { 
     visible: false,
@@ -46,7 +42,7 @@ class Room extends React.Component{
 
   handleOk = e => {
     
-    this.setState({
+    this.setState({ 
       visible: false,
     });
     
@@ -91,9 +87,17 @@ class Room extends React.Component{
     this.props.user.socket.emit('create-game-from-client', roomCreate);    
 
     this.props.user.socket.on('create-game-from-server',(data) =>{
-          console.log(data.game_id);
+          // console.log(data);
+          // let user = Object.assign({}, this.props.user);
+          // user.token = data.token;
+          // this.props.actions.updateUser(user);
+          
+          // let userLocal = Object.assign({}, this.props.user);
+          // userLocal.token = data.token;
+          // userLocal.socket=null;
+          // userLocal.idsocket="";
+          // localStorage.setItem('userInfo', JSON.stringify(userLocal));
           this.setState({game_id:data.game_id})
-
     });
 
     this.props.user.socket.on('join-game-from-server',(msg)=>{

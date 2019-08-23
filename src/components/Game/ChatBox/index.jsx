@@ -68,7 +68,7 @@ class ChatBox extends React.Component {
             chats: this.state.chats.concat([{
                 username: this.props.user.username,
                 content: ReactDOM.findDOMNode(this.refs.msg).value,
-                img: "http://i.imgur.com/Tj5DGiO.jpg",
+                img: "https://img.icons8.com/clouds/2x/user.png",
             }])
         }, () => {
             ReactDOM.findDOMNode(this.refs.msg).value = "";

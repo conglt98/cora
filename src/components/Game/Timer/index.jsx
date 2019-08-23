@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import * as gameActions from "../../../actions";
 import {bindActionCreators} from "redux";
 
-const TIME = 7;
+const TIME = 40;
 class Timer extends Component {
 
   constructor(props) {

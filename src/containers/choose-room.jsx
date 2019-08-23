@@ -104,9 +104,7 @@ class ChooseRoom extends Component {
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}>
-          <div className="text-ask">Do you accept bet money ${this.state.betMoney}
-            - ID: {this.state.id}
-            - Host: {this.state.host}?
+          <div className="text-ask">Do you accept bet money ${this.state.betMoney} from {this.state.host}?
           </div>
         </Modal>
       </div>

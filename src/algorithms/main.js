@@ -1,5 +1,3 @@
-import { pieces } from "../constants/actionTypes";
-// Func checkWin will return array have length 5 when win and return array empty
 export const checkWin = (board, row, col, turn) => {
   console.log("checkwin");
   let piece_win = [];

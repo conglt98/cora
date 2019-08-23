@@ -30,6 +30,7 @@ th{
     height: 30px;
     padding: 0px 30px;
     border-radius: 3px !important;
+    min-width: 106px;
 }
 
 .form-login .input-username, .form-login .input-password{

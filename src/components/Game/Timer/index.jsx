@@ -2,19 +2,47 @@ import React, {Component} from 'react'
 import CustomProgressBar from './progressBar'; 
 import '../../../styles/Game/Timer.css'
 
+import {connect} from "react-redux";
+import * as gameActions from "../../../actions";
+import {bindActionCreators} from "redux";
+
+
 class Timer extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      count: 10
+      count: 100
     }
+  }
+
+  componentDidMount() {
+    this.myInterval = setInterval(() => {
+      this.setState(prevState => ({
+        count: prevState.count - 1
+      }))
+      this.props.actions.updateCountdown(this.state.count);
+    }, 1000)
+  }
+
+  componentWillReceiveProps = props =>{
+    if (props.is_win===1||props.is_win===0){
+      clearInterval(this.myInterval)
+    }else{
+      this.setState({
+        count: 100
+      })
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.myInterval);
   }
 
   render() {
     const {count} = this.state;
     if (count === -1) {
-      this.setState({count: 10})
+      this.setState({count: 100})
     }
     return (
       <div className="container container-timer">
@@ -23,7 +51,7 @@ class Timer extends Component {
           <div className="title-turn">Turn: {this.props.piece_current}</div>
           </div>
           <div className="col-8">
-            <CustomProgressBar percentage = {this.state.count*10}/>
+            <CustomProgressBar percentage = {this.state.count/100*100}/>
           </div>
 
           <div className="col-2">
@@ -36,18 +64,18 @@ class Timer extends Component {
       </div>
     );
   }
-
-  componentDidMount() {
-    this.myInterval = setInterval(() => {
-      this.setState(prevState => ({
-        count: prevState.count - 1
-      }))
-    }, 1000)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.myInterval);
-  }
 }
 
-export default Timer;
+const mapStateToProps = state => (
+  {
+    piece_current:state.gameReducer.piece_current
+  }
+);
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(gameActions, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

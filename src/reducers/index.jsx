@@ -6,6 +6,8 @@ import GameReducer from './game-reducer';
 import RoomReducer from './room-reducer'
 import ChooseRoomReducer from './choose-room-reducer'
 import UserOReducer from './user-o-reducer'
+import roomPlayingReducer from './room-playing-reducer'
+import countdownReducer from './countdown-reducer'
 
 const allReducers = combineReducers({
     foods: FoodReducer,
@@ -14,7 +16,9 @@ const allReducers = combineReducers({
     gameReducer: GameReducer,
     rooms: RoomReducer,
     chooseRoom: ChooseRoomReducer,
-    userOCurrent: UserOReducer  
+    userOCurrent: UserOReducer,
+    roomPlaying: roomPlayingReducer,
+    countdown: countdownReducer
 });
 
 export default allReducers;

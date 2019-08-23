@@ -54,7 +54,7 @@ class Header extends React.Component {
       <div className="signup">
         <Container>
           <Row>
-            <Col><img className="imageGame" src={bg} width="400px" height="400px" alt=""/></Col>
+            <Col className="box-img"><img className="imageGame" src={bg} width="400px" height="400px" alt=""/></Col>
             <Col>
               <form className="form-signup">
 

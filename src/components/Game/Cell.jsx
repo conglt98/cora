@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import '../../styles/Game/Cell.css'
 import {pieces} from '../../constants/actionTypes'
+import {connect} from 'react-redux'
 
 export class Cell extends Component {
     constructor() {
@@ -8,7 +9,8 @@ export class Cell extends Component {
         this.state = {
           class_css_o: "not-focusable btn btn-default btnO btn-piece",
           class_css_x: "not-focusable btn btn-default btnX btn-piece",
-          class_css_normal: "not-focusable btn btn-default btn-piece"
+          class_css_normal: "not-focusable btn btn-default btn-piece",
+          isDisabled: 0
         };
       }
       render() {
@@ -28,10 +30,15 @@ export class Cell extends Component {
         }
         
         return (
-          <button disabled={0}
+          <button disabled={this.state.isDisabled}
             className={my_class_css}
             onClick={() => {
-              if (data == null) mark(row, col);
+              if (data == null && 
+                ((this.props.user.username === this.props.roomPlaying.host_name
+                  && this.props.piece_current==="X")||
+                  (this.props.user.username === this.props.userO.username
+                    && this.props.piece_current==="O")))
+                mark(row, col);
             }}
           >
             {data}
@@ -40,4 +47,13 @@ export class Cell extends Component {
       }
 }
 
-export default Cell
+const mapStateToProps = state =>{
+  return {
+    piece_current : state.gameReducer.piece_current,
+    roomPlaying: state.roomPlaying,
+    userO: state.userOCurrent.userO,
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps)(Cell)

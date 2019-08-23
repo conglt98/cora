@@ -31,13 +31,14 @@ class GameResultModal extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.is_win===1||nextProps.is_win===0) {
+    if(nextProps.is_win===1||nextProps.is_win===0||nextProps.time===0) {
       this.setState({visible: true});
+
     }
   }
 
   render() {
-    const {piece_current, is_win} = this.props;
+    const {piece_current, is_win, time} = this.props;
 
     return (
       <div>
@@ -48,11 +49,14 @@ class GameResultModal extends React.Component {
           onCancel={this.handleCancel}
         >
           <div>
-              <p>{" "} {is_win === 1
+              <p>{" "} {(is_win === 1 && time !==0)
                   ? (
                     <span>{piece_current}
                       WIN</span>
                   )
+                  : (is_win === 1 && time === 0)
+                  ?( <span>{piece_current}
+                    LOSE</span>)
                   : is_win === 0
                     ? (
                       <span>DRAW</span>

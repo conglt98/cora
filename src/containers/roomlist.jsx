@@ -23,9 +23,9 @@ class RoomList extends Component {
   //   socket.emit("load-game-from-client")
   // }
 
-  componentDidMount = () => {
-    this.setState({allRooms:this.props.rooms})
-  }
+  // componentDidMount = () => {
+  //   this.setState({allRooms:this.props.rooms})
+  // }
 
   componentWillMount(){
     const socket = socketIOClient(this.state.endpoint);
@@ -42,12 +42,13 @@ class RoomList extends Component {
     socket.on('load-game-from-server', (data) => {
       //console.log(JSON.parse(data).list);
       let dataCraw = JSON.parse(data).list
-      let oldData = this.props.rooms;
+      //let oldData = this.props.rooms;
       
+      const curPage = this.state.currentPage?this.state.currentPage:1;
       this.setState({
         allRooms:dataCraw,
-        currentRooms: dataCraw?dataCraw.slice(0, 8):null,
-        currentPage: 1,
+        currentRooms: (dataCraw?dataCraw.slice((curPage-1)*8, curPage*8):null),
+        currentPage: curPage,
         totalPages:dataCraw?dataCraw.length:0
        });
       //socket.removeListener('load-game-from-server');
@@ -108,7 +109,12 @@ class RoomList extends Component {
     } = this.state;
     const totalRooms = allRooms.length;
    
-    if (totalRooms === 0) return null;
+    if (totalRooms === 0) 
+    return (
+      <div>
+        <h2 className="title-room-list">Total rooms: {totalRooms}</h2>
+      </div>);
+   
     return (
       <div>
         <h2 className="title-room-list">Total rooms: {totalRooms}</h2>
@@ -133,7 +139,7 @@ class RoomList extends Component {
 function mapStateToProps(state) {
   return {
     rooms: state.rooms,
-    user:state.user
+    user: state.user
   };
 }
 

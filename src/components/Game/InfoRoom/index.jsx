@@ -5,8 +5,8 @@ import {connect} from 'react-redux'
 
 export class InfoRoom extends Component {
   state={
-    money: this.props.chooseRoom ? this.props.chooseRoom.bet_money : 0,
-    host: this.props.chooseRoom? this.props.chooseRoom.host_name:""
+    money: this.props.roomPlaying ? this.props.roomPlaying.bet_money : 0,
+    host: this.props.roomPlaying? this.props.roomPlaying.host_name:""
   }
 
   render() {
@@ -26,7 +26,8 @@ function mapStateToProps(state){
   return {
     user: state.users,
     chooseRoom:state.chooseRoom,
-    userO: state.userOCurrent.userO
+    userO: state.userOCurrent.userO,
+    roomPlaying: state.roomPlaying
   };
 }
 

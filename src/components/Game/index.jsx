@@ -23,9 +23,67 @@ class Game extends Component {
     }
   }
 
+  componentWillMount = ()=>{
+    console.log("GAME");
+    console.log(this.props.chooseRoom);
+    let room = JSON.parse(JSON.stringify(this.props.chooseRoom))
+    this.props.actions.roomPlaying(room)
+  }
+
+  componentWillReceiveProps = props =>{
+    if (props.countdown===0){
+        this.setState({
+          isWin:1
+        })
+    }
+  }
+
+  componentDidMount = ()=>{
+    if (this.props.user.socket)
+    this.props.user.socket.on('play-game-from-server',(data)=>{
+      console.log("gamefromserver");
+      
+      let dataJSON = JSON.parse(data);
+      console.log(dataJSON);
+
+      const {actions, array_board, number_cell} = this.props;
+
+      let count_tmp = this.state.count + 1;
+      this.setState({count: count_tmp});
+
+      let array_new = array_board;
+      array_new[dataJSON.x][dataJSON.y] = dataJSON.info.turn === "X" ? "O":"X";
+      actions.mark(array_new);
+   
+      //check win
+      const pieces_win = dataJSON.result;
+
+      if (pieces_win && pieces_win.length > 0) {
+        console.log("win");
+        this.setState({isWin: 1, piecesWin: pieces_win});
+
+      } else if (count_tmp === number_cell * number_cell) {
+        this.setState({isWin: 0})
+      } else {
+        actions.switch_piece(dataJSON.info.turn); 
+      }
+    })
+  }
+
   mark(row, col) {
+    console.log(this.props.user);
+    let request = {
+      x:row,
+      y:col,
+      socket_id: this.props.user.idsocket,
+      game_id: this.props.roomPlaying.id,
+      user_id: this.props.user.id
+    }
+    console.log(request);
+    this.props.user.socket.emit('play-game-from-client',request);
+    
     const {actions, array_board, piece_current, number_cell} = this.props;
-    if (this.state.isWin == 1) {
+    if (this.state.isWin === 1) {
       return;
     }
 
@@ -44,12 +102,12 @@ class Game extends Component {
       console.log("win");
       this.setState({isWin: 1, piecesWin: pieces_win});
 
-    } else if (count_tmp == number_cell * number_cell) {
+    } else if (count_tmp === number_cell * number_cell) {
       this.setState({isWin: 0})
     } else {
-      actions.switch_piece(piece_current == pieces.X
+      actions.switch_piece(piece_current === pieces.X
         ? pieces.O
-        : pieces.X);
+        : pieces.X); 
     }
   }
 
@@ -66,17 +124,15 @@ class Game extends Component {
   }
 
   render() {
-    console.log("GAME");
-    console.log(this.props.chooseRoom);
-
+    
     const {actions, array_board, piece_current} = this.props;
-    console.log(array_board);
+    //console.log(array_board);
     const {isWin, piecesWin} = this.state;
     return (
     <div>
     <NavBar/>
-    <GameResultModal piece_current={piece_current} is_win={isWin}/>
-    <Timer piece_current={piece_current}/>
+    <GameResultModal piece_current={piece_current} is_win={isWin} time={this.props.countdown}/>
+    <Timer piece_current={piece_current} is_win={isWin}/>
         <div className="container container-info-board-message">
           <div className="row">
             <div className="col">
@@ -126,7 +182,9 @@ const mapStateToProps = state => (
     array_board: state.gameReducer.array_board, 
     piece_current: state.gameReducer.piece_current,
     user: state.user,
-    chooseRoom:state.chooseRoom
+    chooseRoom:state.chooseRoom,
+    countdown:state.countdown,
+    roomPlaying:state.roomPlaying
   }
 );
 

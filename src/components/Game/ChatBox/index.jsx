@@ -24,6 +24,7 @@ class ChatBox extends React.Component {
     }
 
     componentWillMount = ()=>{
+        if (this.props.user.socket)
         this.props.user.socket.on('chat-game-from-server',(data)=>{
             console.log(data.message);
 
@@ -72,7 +73,7 @@ class ChatBox extends React.Component {
         }, () => {
             ReactDOM.findDOMNode(this.refs.msg).value = "";
             let request = {
-                game_id: this.props.chooseRoom.id,
+                game_id: this.props.roomPlaying.id,
                 username: this.props.user.username,
                 message:this.state.chats
             }
@@ -120,7 +121,8 @@ const mapStateToProps = state => (
 {
       user: state.user,
       chooseRoom: state.chooseRoom,
-      userO: state.userOCurrent
+      userO: state.userOCurrent,
+      roomPlaying: state.roomPlaying
 }
 );
 

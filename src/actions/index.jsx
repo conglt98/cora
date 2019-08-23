@@ -1,5 +1,5 @@
 import {SELECT_FOOD} from './actionTypes'
-import { types, rooms, UserO, User,  roomlist } from "../constants/actionTypes";
+import { countdown,types, rooms, UserO, User,  roomlist, roomplaying } from "../constants/actionTypes";
 
 export const selectFood = (food) => {
     console.log(`You click = ${food.name}`);
@@ -20,6 +20,13 @@ export const updateRooms = (rooms) => {
     return {
         type: roomlist.UPDATE_ROOMS,
         rooms
+    }
+}
+
+export const roomPlaying = (room) =>{
+    return {
+        type: roomplaying.ROOM_PLAYING,
+        room
     }
 }
 
@@ -55,5 +62,12 @@ export const updateUser = (user) => {
     return {
         type: User.UPDATE_USER,
         user
+    }
+}
+
+export const updateCountdown = (time) =>{
+    return {
+        type: countdown.UPDATE_COUNTDOWN,
+        time
     }
 }

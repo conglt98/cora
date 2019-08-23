@@ -216,7 +216,7 @@ class Room extends React.Component{
           <div className="money">$ {money}</div>
 
           <Slider marks={marks} defaultValue={0} min={0}
-            max={1000}
+            max={1000} step={10}
             onAfterChange={this.onAfterChangeSlider} onChange={this.onChange.bind(this)} />
         </Modal>
 

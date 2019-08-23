@@ -13,6 +13,10 @@ export const roomlist = {
     UPDATE_ROOMS: "UPDATE_ROOMS"
 }
 
+export const roomplaying = {
+    ROOM_PLAYING:"ROOM_PLAYING"
+}
+
 export const UserO = {
     UPDATE_USER_O: "UPDATE_USER_O"
 }
@@ -24,4 +28,8 @@ export const User = {
 export const pieces = {
     X: "X",
     O: "O"
+}
+
+export const countdown = {
+    UPDATE_COUNTDOWN: "UPDATE_COUNTDOWN"
 }

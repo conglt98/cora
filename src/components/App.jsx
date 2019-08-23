@@ -42,6 +42,17 @@ class App extends Component {
   }
 
   componentWillMount(){
+    // let user = {
+    //   id: 1,
+    //   username:"conglt",
+    //   money: 500,
+    //   token:"abcxyz",
+    //   isAuth: true,
+    //   idsocket:"",
+    //   socket: null
+    // }
+    // localStorage.setItem('userInfo', JSON.stringify(user));
+
     const userTmp = JSON.parse(localStorage.getItem("userInfo"));
       if (userTmp){
         if (userTmp.isAuth){

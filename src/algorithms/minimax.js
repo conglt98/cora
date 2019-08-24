@@ -8,16 +8,6 @@ function uniq(items, key) {
     });
 }
 
-function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-}
-
 function makeBoardCopy(board) {
     var copy_board = {};
     
@@ -403,37 +393,37 @@ export default function minimax(board, depth, alpha, beta, type) {
     var bestMove = moves[0];
     var result = [alpha, bestMove];
     
-    // Base Case:
+    
     if (depth === 0) {
         result = [(evaluateBoard(board, type) - evaluateBoard(board, t_type)), moves.pop()];
         return result;
     }
     
-    // Recursive Case:
+    
     var currentAlpha = alpha;
     while (moves.length > 0) {
         var freshBoard = makeBoardCopy(board);
         var testMove = moves.pop();
         
-        // Get the x,y coordinates from the testMove
+        
         var testX = testMove[0];
         var testY = testMove[1];
 
-        // Add it to the fresh game board
+        
         if (freshBoard[testX] === undefined) {
             freshBoard[testX] = {};
         }
         freshBoard[testX][testY] = type;
-        // Go down the minimax tree and get the results
+        
         var temp = minimax(freshBoard, depth - 1, -beta, -currentAlpha, t_type);
         var tempScore = -temp[0];
 
-        // Update the alpha values
+        
         if (tempScore > currentAlpha) {
             currentAlpha = tempScore;
             bestMove = testMove;
         }
-        // Alpha-Beta Pruning
+        
         if (currentAlpha > beta) {
             result = [currentAlpha, bestMove];
             return result;

@@ -16,7 +16,9 @@ export class InfoRoom extends Component {
         <img src={vs} width="350px" height="460px" alt=""/>
         <div className="box-user-x">{this.state.host}</div>
         <div className="box-user-o">{this.props.userO.username}</div>
-        <div className="box-bet-money">${this.state.money}</div>
+        <div className="box-bet-money">
+          {(this.props.roomPlaying?this.props.roomPlaying.id==="playvsbot":true)?null:<div>${this.state.money}</div>}
+          </div>
       </div>
     )
   }

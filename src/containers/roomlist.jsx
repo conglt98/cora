@@ -21,17 +21,9 @@ class RoomList extends Component {
     endpoint: SOCKET_SERVER
   };
 
-  // send = () => {
-  //   const socket = socketIOClient(this.state.endpoint);
-  //   socket.emit("load-game-from-client")
-  // }
-
-  // componentDidMount = () => {
-  //   this.setState({allRooms:this.props.rooms})
-  // }
-
   componentWillMount(){
-    const socket = socketIOClient(this.state.endpoint,{query: "token="+this.props.user.token});
+    console.log(this.props.user);
+    const socket = socketIOClient(this.state.endpoint,{query: {"token": this.props.user.token, "user_id":this.props.user.id}});
     socket.on('socket-id-from-server', (data) => {
      console.log(data);
      let userSocket = Object.assign({}, this.props.user);
@@ -40,11 +32,10 @@ class RoomList extends Component {
      this.props.actions.updateUser(userSocket);
     })
 
-    //console.log(this.props.rooms);
-
+   
     socket.on('load-game-from-server', (data) => {
-      //console.log(JSON.parse(data).list);
-      let dataCraw = JSON.parse(data).list
+      //console.log((JSON.parse(data).list).map(item => JSON.parse(item)));
+      let dataCraw = (JSON.parse(data).list).map(item => JSON.parse(item));
       //let oldData = this.props.rooms;
       
       const curPage = this.state.currentPage?this.state.currentPage:1;
@@ -68,7 +59,7 @@ class RoomList extends Component {
         console.log(msg);
         let user = Object.assign({}, this.props.user);
         user.token = msg.data.token;
-        user.money = msg.data.total_money;
+        user.money = parseInt(msg.data.total_money);
         this.props.actions.updateUser(user);
 
         let userLocal = JSON.parse(localStorage.getItem("userInfo"));
@@ -81,16 +72,6 @@ class RoomList extends Component {
         console.log(err);
     })
   }
-  
-
-  // componentWillReceiveProps = props => {
-  //   this.setState({
-  //     allRooms:props.rooms,
-  //     currentRooms: props.rooms.slice(0, 8),
-  //     currentPage: 1,
-  //     totalPages:props.rooms.length
-  //    });
-  // }
 
   onPageChanged = data => {
     const { allRooms } = this.state;

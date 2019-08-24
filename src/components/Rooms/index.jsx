@@ -5,7 +5,7 @@ import Footer from '../Footer'
 import {Button} from 'reactstrap'
 import '../../styles/Room/room.css'
 import ChooseRoomContainer from '../../containers/choose-room'
-import {Slider, Modal} from 'antd'
+import {Slider, Modal, Button as ButtonA} from 'antd'
 import {withRouter} from 'react-router-dom';
 import {message} from 'antd'
 import {connect} from 'react-redux' 
@@ -27,12 +27,19 @@ class Room extends React.Component{
     money: 0,
     waiting: false,
     confirmLoading:false,
-    game_id:""
+    game_id:"",
+    gameModeVisible:false
   };
 
   showModal = () => {
     this.setState({
       visible: true,
+    });
+  };
+
+  showGameMode = () => {
+    this.setState({
+      gameModeVisible: true,
     });
   };
 
@@ -63,6 +70,12 @@ class Room extends React.Component{
       visible: false,
     });
   };
+
+  handleCloseGameMode = e =>{
+    this.setState({
+      gameModeVisible: false,
+    });
+  }
 
   handleWaitingOk = e =>{
     
@@ -164,6 +177,29 @@ class Room extends React.Component{
 
   }
 
+  playBot = () =>{
+    let userO = {
+        id: "bot",
+        username: "bot"
+    }
+    let room = {
+      id: "playvsbot",
+      bet_money: 0,
+      host: this.props.user.id,
+      host_name: this.props.user.username
+      
+    }
+    this.props.actions.switch_piece("X"); 
+    this.props.actions.update_board_property({});
+    this.props.actions.updateUserO(userO);
+    this.props.actions.chooseRoom(room);
+
+    console.log(this.props.userO);
+
+    message.success("Join room");
+    this.props.history.push('/play');
+  }
+
   handleWaitingCancel = e =>{
     
     this.setState({
@@ -204,11 +240,26 @@ class Room extends React.Component{
         
         <div className="container">
         <div className="row">
-        <Button color="primary" className="btn-create-room" onClick={this.showModal}>
+        <Button color="primary" className="btn-create-room" onClick={this.showGameMode}>
           +
         </Button>
         </div>
         </div>
+
+        <Modal
+          title="Game mode"
+          visible={this.state.gameModeVisible}
+          footer={[
+            <ButtonA onClick={this.handleCloseGameMode}>
+              Back
+            </ButtonA>
+          ]}
+          >
+          <div className="d-flex flex-row justify-content-around">
+            <Button color="primary" onClick={this.playBot}>Player vs Bot</Button>
+            <Button color="primary" onClick={this.showModal}>Player vs Player</Button>
+          </div>
+        </Modal>
 
         <Modal
           visible={this.state.visible}
@@ -246,7 +297,8 @@ function mapsStateToProps(state){
     user:state.user,
     userO: state.userOCurrent.User0,
     chooseRoom: state.chooseRoom,
-    rooms: state.rooms
+    rooms: state.rooms,
+    roomPlaying: state.roomPlaying
   }
 }
 

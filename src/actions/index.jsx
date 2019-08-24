@@ -1,13 +1,4 @@
-import {SELECT_FOOD} from './actionTypes'
 import { ignoreTurn,countdown,types, rooms, UserO, User,  roomlist, roomplaying } from "../constants/actionTypes";
-
-export const selectFood = (food) => {
-    console.log(`You click = ${food.name}`);
-    return {
-        type: SELECT_FOOD,
-        payload: food
-    }
-}
 
 export const chooseRoom = (room) => {
     return {
@@ -49,6 +40,11 @@ export const mark =  (array_new) => ({
 export const switch_piece = (data) => ({
     type: types.SWITCH_PIECE,
     data
+})
+
+export const update_board_property = (board) => ({
+    type: types.UPDATE_BOARD_PROPERTY,
+    board
 })
 
 export const updateUserO = (userO) => {

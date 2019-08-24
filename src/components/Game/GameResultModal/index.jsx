@@ -22,6 +22,10 @@ class GameResultModal extends React.Component {
     this.setState({visible: true});
   };
 
+  handleCancle = e =>{
+    this.setState({visible:false})
+  }
+
   handleOk = e => {
     console.log(e);
     this.setState({visible: false});
@@ -79,6 +83,9 @@ class GameResultModal extends React.Component {
           title="Result"
           visible={this.state.visible}
           footer={[
+            <Button key="cancel" onClick={this.handleCancle}>
+            Stay
+            </Button>,
             <Button key="submit" type="primary" onClick={this.handleOk}>
               Quit
             </Button>

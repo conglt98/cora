@@ -2,7 +2,7 @@ import {roomplaying} from '../constants/actionTypes'
 
 const inital_state = 
         {
-            id:1,
+            id:0,
             bet_money:0,
             host_name: "",
             host: "xxxx"

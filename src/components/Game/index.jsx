@@ -4,7 +4,7 @@ import {bindActionCreators} from "redux";
 import Board from "../Game/Board";
 import * as gameActions from "../../actions";
 import {pieces} from "../../constants/actionTypes";
-import {checkWin} from "../../algorithms/main";
+import {checkWin} from "../../algorithms/checkwin";
 import NavBar from "../NavBar";
 import InfoRoom from "./InfoRoom";
 import Timer from "./Timer";
@@ -12,6 +12,7 @@ import Footer from '../Footer';
 import "../../styles/Game/Game.css"
 import ChatBox from "./ChatBox";
 import GameResultModal from "./GameResultModal";
+import minimax from '../../algorithms/minimax';
 
 class Game extends Component {
   constructor(props) {
@@ -23,6 +24,31 @@ class Game extends Component {
     }
   }
 
+  addPiecesToBoardProperty = (board,row,col,piece) =>{
+    if (board.hasOwnProperty(row)){
+      board[row][col] = piece;
+    }else{
+      board[row] = {};
+      board[row][col] = piece;
+    }
+    return board;
+  }
+
+  makeBoardCopy(board) {
+    var copy_board = {};
+    
+    for (var x in board) {
+        if (!board.hasOwnProperty(x)) {
+            continue;
+        }
+        copy_board[x] = {};
+        for (var y in board[x]) {
+            copy_board[x][y] = board[x][y];
+        }
+    }
+    return copy_board;
+}
+
   componentWillMount = ()=>{
     console.log("GAME");
     console.log(this.props.chooseRoom);
@@ -31,20 +57,19 @@ class Game extends Component {
   }
 
   componentWillReceiveProps = props =>{
-    if (props.countdown===0){
+    if (this.props.roomPlaying && this.props.roomPlaying.id !=="playvsbot"){
+      if (props.countdown===0){
                
         let request = {
           socket_id: this.props.user.idsocket,
           game_id: this.props.roomPlaying.id,
           user_id: this.props.user.id
         }
-        console.log(request)
         this.props.user.socket.emit('ignore-game-from-client',request);
     }
     if (this.props.user.socket)
     this.props.user.socket.on('ignore-game-from-server',(data)=>{
-      console.log("ignore");
-      console.log(data);
+     
       let dataJSON = JSON.parse(data);
       if (dataJSON.status === "ignore game"){
         this.setState({isWin:1}) 
@@ -52,6 +77,7 @@ class Game extends Component {
         this.props.actions.updateIgnoreTurn(true);
       }
     })
+    }
   }
 
   componentDidMount = () =>{
@@ -88,16 +114,19 @@ class Game extends Component {
 
   mark(row, col) {
     console.log(this.props.user);
-    let request = {
-      x:row,
-      y:col,
-      socket_id: this.props.user.idsocket,
-      game_id: this.props.roomPlaying.id,
-      user_id: this.props.user.id
-    }
-    console.log(request);
-    this.props.user.socket.emit('play-game-from-client',request);
     
+    if (this.props.roomPlaying.id !== "playvsbot"){
+      let request = {
+        x:row,
+        y:col,
+        socket_id: this.props.user.idsocket,
+        game_id: this.props.roomPlaying.id,
+        user_id: this.props.user.id
+      }
+      console.log(request);
+      this.props.user.socket.emit('play-game-from-client',request);  
+    }
+
     const {actions, array_board, piece_current, number_cell} = this.props;
     if (this.state.isWin === 1) {
       return;
@@ -121,7 +150,44 @@ class Game extends Component {
     } else if (count_tmp === number_cell * number_cell) {
       this.setState({isWin: 0})
     } else {
-      actions.switch_piece(piece_current === pieces.X
+      
+      if (this.props.roomPlaying.id==="playvsbot"){
+        
+        let board_property = this.makeBoardCopy(this.props.board_property);
+        board_property= this.addPiecesToBoardProperty(board_property,col,row,"X")
+        console.log(board_property);
+       
+        if (this.props.piece_current==="X"){
+             actions.switch_piece("O");
+             var bestMove = minimax(board_property, 2, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, "X");
+             console.log(bestMove[1][0]);
+             console.log(bestMove[1][1]); 
+          
+             let newRow = bestMove[1][0];
+             let newCol = bestMove[1][1];
+
+            board_property = this.addPiecesToBoardProperty(board_property,newRow,newCol,"O");
+            this.props.actions.update_board_property(board_property);
+
+             let array_new = this.props.array_board;
+             array_new[newCol][newRow] = "O";
+             actions.mark(array_new);
+             //check win
+             const pieces_win = checkWin(array_new, newCol, newRow,"O");
+            
+          if (pieces_win.length > 0) {
+            console.log("win");
+            this.setState({isWin: 1, piecesWin: pieces_win});
+
+          } else if (count_tmp === number_cell * number_cell) {
+            this.setState({isWin: 0}) 
+            
+          }else
+            actions.switch_piece("X");
+      }
+    }
+    else
+        actions.switch_piece(piece_current === pieces.X
         ? pieces.O
         : pieces.X); 
     }
@@ -200,7 +266,8 @@ const mapStateToProps = state => (
     user: state.user,
     chooseRoom:state.chooseRoom,
     countdown:state.countdown,
-    roomPlaying:state.roomPlaying
+    roomPlaying:state.roomPlaying,
+    board_property: state.gameReducer.board_property
   }
 );
 

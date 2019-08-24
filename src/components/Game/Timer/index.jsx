@@ -16,13 +16,17 @@ class Timer extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount = ()=> {
     this.myInterval = setInterval(() => {
       this.setState(prevState => ({
         count: prevState.count - 1
       }))
       this.props.actions.updateCountdown(this.state.count);
     }, 1000)
+
+    if (this.props.roomPlaying && this.props.roomPlaying.id === "playvsbot"){
+      clearInterval(this.myInterval);
+    }
   }
 
   componentWillReceiveProps = props =>{
@@ -68,7 +72,8 @@ class Timer extends Component {
 
 const mapStateToProps = state => (
   {
-    piece_current:state.gameReducer.piece_current
+    piece_current:state.gameReducer.piece_current,
+    roomPlaying:state.roomPlaying
   }
 );
 

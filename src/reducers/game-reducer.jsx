@@ -5,7 +5,8 @@ const numcell = 16
 const inital_state = {
   number_cell: numcell,
   array_board: Array(numcell).fill(null).map(() => Array(numcell).fill(null)),
-  piece_current: pieces.X
+  piece_current: pieces.X,
+  board_property: {}
 };
 export default (state = inital_state, action) => {
   switch (action.type) {
@@ -20,6 +21,10 @@ export default (state = inital_state, action) => {
     }
     case types.MARK: {
       return {...state, array_board: action.array_new}
+    }
+
+    case types.UPDATE_BOARD_PROPERTY: {
+      return {...state, board_property: action.board}
     }
     default:
       return state;

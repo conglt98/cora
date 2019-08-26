@@ -179,7 +179,7 @@ class Room extends React.Component{
     this.props.user.socket.on('remove-game-from-server',(err)=>{
       if (err.status)
       {
-        message.error(err.status);
+        console.log(err.status);
       }
     });
   }

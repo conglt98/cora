@@ -1,4 +1,4 @@
-export const DOMAIN  = "http://192.168.1.5"
+export const DOMAIN  = "http://192.168.43.248"
 
 export const API_SERVER  = DOMAIN+":5000";
 

@@ -88,7 +88,7 @@ class Game extends Component {
       let dataJSON = JSON.parse(data);
       console.log(dataJSON);
 
-      const {actions, array_board, number_cell} = this.props;
+      const {actions, array_board} = this.props;
 
       let count_tmp = this.state.count + 1;
       this.setState({count: count_tmp});
@@ -104,7 +104,7 @@ class Game extends Component {
         console.log("win");
         this.setState({isWin: 1, piecesWin: pieces_win});
 
-      } else if (count_tmp === number_cell * number_cell) {
+      } else if (dataJSON.info.result==="draw") {
         this.setState({isWin: 0})
       } else {
         actions.switch_piece(dataJSON.info.turn); 

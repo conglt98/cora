@@ -123,7 +123,8 @@ class Room extends React.Component{
               host: msg.host,
               host_name: msg.host_name
               
-            } 
+            }
+            this.props.actions.switch_piece("X"); 
             this.props.actions.updateUserO(userO);
             this.props.actions.chooseRoom(room);
             message.success("Join room");

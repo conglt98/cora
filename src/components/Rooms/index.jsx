@@ -79,16 +79,6 @@ class Room extends React.Component{
 
   handleWaitingOk = e =>{
     
-    // let roomObject = {
-    //   id:uuid.v4(),
-    //   name: this.props.user.username+"'s room",
-    //   createdAt:(new Date()).toLocaleString(),
-    //   betMoney: this.state.money,
-    //   host: this.props.user.username
-    // }
-    // console.log(roomObject);
-
-    //socket = socketIOClient(SOCKET_SERVER);
     let roomCreate = {
       user_id: this.props.user.id,
       bet_money: this.state.money,
@@ -100,17 +90,15 @@ class Room extends React.Component{
     this.props.user.socket.emit('create-game-from-client', roomCreate);    
 
     this.props.user.socket.on('create-game-from-server',(data) =>{
-          // console.log(data);
-          // let user = Object.assign({}, this.props.user);
-          // user.token = data.token;
-          // this.props.actions.updateUser(user);
-          
-          // let userLocal = Object.assign({}, this.props.user);
-          // userLocal.token = data.token;
-          // userLocal.socket=null;
-          // userLocal.idsocket="";
-          // localStorage.setItem('userInfo', JSON.stringify(userLocal));
+          if (data.status ==="ok"){
           this.setState({game_id:data.game_id})
+        }else{
+          this.setState({
+            confirmLoading: false,
+            waiting:false
+          });
+          message.error(data.status);
+        }
     });
 
     this.props.user.socket.on('join-game-from-server',(msg)=>{
@@ -148,33 +136,7 @@ class Room extends React.Component{
           }
     })
 
-    this.props.user.socket.on('fail-create-room-server',(err)=>{
-      this.setState({
-        confirmLoading: false,
-        waiting:false
-      });
-      message.error(err.status);
-    });
-
-    // let roomlist = JSON.parse(JSON.stringify(this.props.rooms));
-    // roomlist.unshift(roomObject)
-    // this.props.actions.updateRooms(roomlist);
-
-    // this.setState({
-    //   confirmLoading: true
-    // });
-
-    // setTimeout(() => {
-    //   this.setState({
-    //     waiting: false,
-    //     confirmLoading: false,
-    //   });
-
     
-    //   message.success("Join room");
-    //   this.props.history.push('/play');
-    // }, 5000);
-
   }
 
   playBot = () =>{
@@ -213,8 +175,11 @@ class Room extends React.Component{
     }  
     this.props.user.socket.emit('remove-game-from-client',message); 
     
-    this.props.user.socket.on('fail-remove-game-from-client',(err)=>{
-      message.error(err);
+    this.props.user.socket.on('remove-game-from-client',(err)=>{
+      if (err.status)
+      {
+        message.error(err.status);
+      }
     });
   }
   

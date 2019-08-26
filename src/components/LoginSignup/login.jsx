@@ -84,8 +84,8 @@ class Header extends React.Component{
                         type="text"
                         className="input-username"
                         name="username"
-                        title="Must contain letter, and at least 4, at max 8"
-                        pattern="(?=.*[a-z]).{4,8}"
+                        title="Must not have space and size at least 4, at max 8"
+                        pattern="^[^-\s]{4,8}$"
                         required/></td>
     
                     </tr>

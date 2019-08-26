@@ -175,7 +175,7 @@ class Room extends React.Component{
     }  
     this.props.user.socket.emit('remove-game-from-client',message); 
     
-    this.props.user.socket.on('remove-game-from-client',(err)=>{
+    this.props.user.socket.on('remove-game-from-server',(err)=>{
       if (err.status)
       {
         message.error(err.status);

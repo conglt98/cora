@@ -68,12 +68,21 @@ class Game extends Component {
         this.props.user.socket.emit('ignore-game-from-client',request);
     }
     if (this.props.user.socket)
-    this.props.user.socket.on('ignore-game-from-server',(data)=>{
-     
-      let dataJSON = JSON.parse(data);
+    this.props.user.socket.on('ignore-game-from-server',(res)=>{
+      
+      let dataJSON = JSON.parse(res);
       if (dataJSON.status === "ignore game"){
-        this.setState({isWin:1}) 
+       
+        this.setState({isWin:1})
+ 
         this.props.actions.switch_piece(dataJSON.info.turn);  
+
+        if (dataJSON.info.turn==="X"&&dataJSON.info.result==="win")
+          this.props.actions.switch_piece("O");  
+
+        if (dataJSON.info.turn==="O"&&dataJSON.info.result==="lose")
+          this.props.actions.switch_piece("X");  
+
         this.props.actions.updateIgnoreTurn(true);
       }
     })
